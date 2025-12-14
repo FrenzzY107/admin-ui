@@ -10,17 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-<<<<<<< HEAD
-    "@tailwindcss/vite": "^4.1.13",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwindcss": "^4.1.13"
-=======
     "@tailwindcss/vite": "^4.1.14",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwindcss": "^4.1.14"
->>>>>>> 700c519 (atomic design page sign in dan sign up)
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
