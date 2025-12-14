@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+
 @import "tailwindcss";
-=======
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
 @import "tailwindcss";
@@ -24,4 +24,3 @@
   --color-special-green: #4daf6e;
   --color-special-red: #e73d1c;
 }
->>>>>>> 700c519 (atomic design page sign in dan sign up)
