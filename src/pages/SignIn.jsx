@@ -2,7 +2,7 @@ import React from "react";
 import AuthLayout from "../components/layouts/AuthLayout";
 import FormSignin from "../components/fragments/FormSignin";
 
-function Signin() {
+function SignIn() {
   return (
     <AuthLayout>
       <FormSignin />
@@ -10,4 +10,4 @@ function Signin() {
   );
 }
 
-export default Signin;
+export default SignIn;
