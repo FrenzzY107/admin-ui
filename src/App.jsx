@@ -1,4 +1,5 @@
 import "./App.css";
+<<<<<<< HEAD
 
 function App() {
   return (
@@ -108,6 +109,12 @@ function App() {
       </section>
     </div>
   );
+=======
+import SignIn from "./pages/SignIn";
+
+function App() {
+  return <SignIn />;
+>>>>>>> 700c519 (atomic design page sign in dan sign up)
 }
 
 export default App;
