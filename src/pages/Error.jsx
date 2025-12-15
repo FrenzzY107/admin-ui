@@ -1,19 +1,26 @@
-import React from "react";
-import { useRouteError } from "react-router-dom";
-import Logo from "../components/elements/Logo";
+import { useRouteError, Link } from "react-router-dom";
 
-function ErrorPage() {
+export default function ErrorPage() {
   const error = useRouteError();
 
   return (
-    <div className="flex justify-center min-h-screen items-center bg-special-mainBg flex-col">
-      <Logo />
-      <h1 className="text-2xl font-bold mt-3 mb-1">Sorry,</h1>
-      <p>
-        {error.status} | {error.statusText || error.message}
+    <div className="flex flex-col justify-center items-center min-h-screen bg-special-mainBg text-center px-4">
+      <h1 className="text-5xl font-bold text-primary mb-4">Oops!</h1>
+
+      <p className="text-gray-600 mb-2">
+        Sorry, an unexpected error has occurred.
       </p>
+
+      <p className="text-sm text-gray-400 mb-6">
+        {error?.statusText || error?.message}
+      </p>
+
+      <Link
+        to="/"
+        className="px-4 py-2 bg-primary text-white rounded-md hover:opacity-90"
+      >
+        Back to Home
+      </Link>
     </div>
   );
 }
-
-export default ErrorPage;
