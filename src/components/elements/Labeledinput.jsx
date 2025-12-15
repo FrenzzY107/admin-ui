@@ -1,22 +1,17 @@
 import React from "react";
+import Input from "./Input";
 
-function Labeledinput({ 
-  label = "Email Address", 
-  type = "email", 
-  placeholder = "kakapurnama@gmail.com",
-  id = "email"
-}) {
+function LabeledInput(props) {
+  const { label, id, ...rest } = props;
+
   return (
     <>
-      <label htmlFor={id} className="block text-sm">{label}</label>
-      <input
-        type={type}
-        id={id}
-        placeholder={placeholder}
-        className="p-2 text-sm rounded-md w-full bg-special-mainBg border border-gray-300 text-gray-700 focus:border-black focus:outline-none focus:ring-0 my-2"
-      />
+      <label htmlFor={id} className="block text-sm mb-2">
+        {label}
+      </label>
+      <Input id={id} {...rest} />
     </>
   );
 }
 
-export default Labeledinput;
+export default LabeledInput;
