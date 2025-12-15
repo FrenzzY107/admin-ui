@@ -15,7 +15,6 @@ function Button(props) {
 		<>
 			<button className={finalClasses} type={type}>
 				{children} 
-				Logo
 			</button> 
 		</>
 	);

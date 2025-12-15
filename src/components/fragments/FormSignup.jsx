@@ -1,75 +1,89 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Labeledinput from "../elements/Labeledinput";
-import CheckBox from "../elements/CheckBox";
 import Button from "../elements/Button";
 
-function FormSignin() {
+function FormSignup() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // simulasi signup berhasil
+    navigate("/signin");
+  };
 
   return (
     <>
-      <form className="mt-2">
-        {/* Email */}
+      <form onSubmit={handleSubmit} className="mt-2">
+        {/* Title */}
+        <h1 className="text-center text-lg font-semibold mb-4">
+          Create an Account
+        </h1>
+
+        {/* Name */}
         <div className="py-2">
-          <Labeledinput />
+          <label className="block text-sm mb-1">Name</label>
+          <input
+            type="text"
+            placeholder="kaka purnama"
+            className="p-2 text-sm rounded-md w-full bg-special-mainBg border border-gray-300 text-gray-700 focus:border-black focus:outline-none"
+            required
+          />
         </div>
 
-       
+        {/* Email */}
+        <div className="py-2">
+          <Labeledinput
+            label="Email Address"
+            placeholder="kakapurnama@gmail.com"
+            id="email"
+          />
+        </div>
+
         {/* Password */}
         <div className="py-2 relative">
-          <div className="flex justify-between items-center">
-            <label htmlFor="password" className="block text-sm">Password</label>
-            <a href="#" className="text-primary text-xs hover:underline">
-              Forgot Password?
-            </a>
-          </div>
+          <label className="block text-sm">Password</label>
 
           <input
             type={showPassword ? "text" : "password"}
-            id="password"
             placeholder="********"
-            className="p-2 text-sm rounded-md w-full bg-special-mainBg border border-gray-300 text-gray-700 focus:border-black focus:outline-none focus:ring-0 my-2 pr-10"
+            className="p-2 text-sm rounded-md w-full bg-special-mainBg border border-gray-300 text-gray-700 focus:border-black focus:outline-none my-2 pr-10"
+            required
           />
 
-          {/* Show/Hide Password */}
+          {/* Show / Hide Password */}
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-10 text-gray-400 hover:text-gray-600"
+            className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
           >
-            {showPassword ? (
-              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478..." />
-              </svg>
-            ) : (
-              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M3 3l18 18..." />
-              </svg>
-            )}
+            👁
           </button>
         </div>
 
-        <div className="flex items-center gap-2 my-3">
-          <CheckBox />
-        </div>
+        {/* Terms */}
+        <p className="text-xs text-gray-500 my-3 text-center">
+          By continuing, you agree to our{" "}
+          <span className="text-primary hover:underline cursor-pointer">
+            terms of service
+          </span>
+          .
+        </p>
 
-        <Button type="submit">Login</Button>
+        {/* Sign Up Button */}
+        <Button type="submit">Sign Up</Button>
       </form>
 
-        {/* Divider */}
+      {/* Divider */}
       <div className="flex items-center justify-center my-4 relative">
         <div className="w-full border-t border-gray-300"></div>
         <span className="absolute bg-special-mainBg px-2 text-xs text-gray-400">
-          or sign in with
+          or sign up with
         </span>
       </div>
 
-      {/* Google Button */}
+         {/* Google Button */}
      <Button type="button" variant="secondary">
   <span className="flex items-center justify-center">
 		<svg
@@ -100,18 +114,20 @@ function FormSignin() {
   </span>
 </Button>
 
-
-      {/* REGISTER LINK */}
+      {/* Back to Login */}
       <div className="flex justify-center mt-4">
-        <Link
-          to="/signup"
-          className="text-primary text-sm font-bold hover:underline"
-        >
-          Create an account
-        </Link>
+        <span className="text-sm text-gray-600">
+          Already have an account?{" "}
+          <Link
+            to="/signin"
+            className="text-primary font-bold hover:underline"
+          >
+            Sign In Here
+          </Link>
+        </span>
       </div>
     </>
   );
 }
 
-export default FormSignin;
+export default FormSignup;
