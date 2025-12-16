@@ -1,10 +1,10 @@
-// src/App.jsx
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SignInPage from "./pages/SignIn";
 import SignUpPage from "./pages/SignUp";
 import DashboardPage from "./pages/dashboard";
 import ErrorPage from "./pages/error";
+import BalancePage from "./pages/balance";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <SignUpPage />,
+  },
+  {
+    path: "/balance",
+    element: <BalancePage />,
   },
 ]);
 
