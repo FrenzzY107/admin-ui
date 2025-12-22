@@ -1,13 +1,23 @@
 import React from "react";
-import Card from "../elements/Card"
+import Card from "../elements/Card";
+import BarsDataset from "../elements/BarsDataset";
 
-function CardStatistic() {
-    return (
-        <Card
-        title="Total Balance"
-        desc="Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi, autem porro asperiores numquam sed veritatis debitis beatae amet laboriosam fuga pariatur sapiente suscipit culpa facere voluptatem. Repellat asperiores doloribus earum!"
-        />
-    )
+function CardStatistic(props) {
+    const { data } = props;
+  return (
+    <>
+         <Card title="Statistics"   				
+         desc={
+          <>
+            <select className="font-bold text-2xl ">
+              <option>Weekly Comparison</option>
+            </select>
+            <BarsDataset dataset={data} />
+          </>
+        }
+     />
+     </>   
+  );
 }
 
-export default CardStatistic
+export default CardStatistic;
