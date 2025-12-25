@@ -4,7 +4,8 @@ import Input from "../elements/Input";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Icon from "../elements/Icon";
 import { NavLink } from "react-router-dom";
-import { ThemeContext } from "../../context/themeContext";
+import { ThemeContext } from "../../context/ThemeContext";
+
 
 function MainLayout(props) {
   const { children } = props;
