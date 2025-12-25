@@ -10,11 +10,14 @@ function FormSignin() {
   return (
     <>
       <form className="mt-2">
-        {/* Email */}
+           {/* Email */}
         <div className="py-2">
-          <Labeledinput />
+          <Labeledinput
+            label="Email Address"
+            placeholder="kakapurnama@gmail.com"
+            id="email"
+          />
         </div>
-
        
         {/* Password */}
         <div className="py-2 relative">
