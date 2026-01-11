@@ -10,7 +10,7 @@ import CardExpenseBeakdown from "../components/fragments/CardExpenseBeakdown";
 import { transactions, bills, expensesBreakdowns, balances, goals, expensesStatistics } from "../data";
 
 import { goalService } from "../services/dataService";
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../context/AuthContext";
 
 function dashboard() {
   	const [goals, setGoals] = useState({});
