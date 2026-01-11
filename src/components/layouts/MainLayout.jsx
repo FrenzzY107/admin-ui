@@ -5,6 +5,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import Icon from "../elements/Icon";
 import { NavLink } from "react-router-dom";
 import { ThemeContext } from "../../context/ThemeContext";
+import { AuthContext } from "../../context/authContext";
 
 
 function MainLayout(props) {
@@ -32,16 +33,29 @@ const { theme, setTheme } = useContext(ThemeContext);
     { id: 6, name: "Goals", icon: <Icon.Goal />, link: "/goal" },
     { id: 7, name: "Settings", icon: <Icon.Setting />, link: "/setting" },
   ];
+
+  const { user, logout } = useContext(AuthContext);
+    const handleLogout = async () => {
+    try {
+      await logoutService();
+      logout(); 
+    } catch (err) {
+      console.error(err);
+      if (err.status === 401) {
+        logout();
+      }
+    }
+  };
+
+
   
   return (
     <>
 	    <div className={`flex min-h-screen ${theme.name}`}>
-			<aside 
-             className="bg-defaultBlack  w-28 sm:w-64 text-special-bg2
-            flex flex-col justify-between  px-4 sm:px-7 py-12 transition-all duration-300"     
-        >
+			<aside className="bg-defaultBlack w-64 text-white">
+
         <div>
-			<div classname="mb-10">
+			<div className="mb-10">
                 <Logo variant="secondary"/>
             </div>
 			<nav>
@@ -76,19 +90,19 @@ const { theme, setTheme } = useContext(ThemeContext);
             </div>
           </div>
 		<div>
-			<NavLink to="/login">
+			  <div onClick={handleLogout} className="cursor-pointer">
             <div className="flex bg-special-bg3 text-white px-4 py-3 rounded-md">
             <div className="mx-auto sm:mx-0 text-primary">
                 <Icon.Logout />
             </div>
             <div className="ms-3 hidden sm:block">Logout</div>
         </div>
-        </NavLink>
+        </div>
             <div className="border my-10 border-b-special-bg"></div>
 									<div className="flex justify-between items-center">
               <div>Avatar</div>
               <div className="hidden sm:block">
-                Username
+                <div>{user.name}</div>
                 <br />
                 View Profile
               </div>
@@ -101,7 +115,7 @@ const { theme, setTheme } = useContext(ThemeContext);
 			<div className="bg-special-mainBg flex-1 flex flex-col">
                 <header className="border border-b border-gray-05 px-6 py-7 flex justify-between items-center">
                     <div className="flex items-center">
-                    <div className="font-bold text-2xl me-6">Username</div> 
+                    <div className="font-bold text-2xl me-6">{user.name}</div> 
 			        <div className="text-gray-03 flex">
                         <Icon.ChevronRight size={20} />
                         <span>May 19, 2023</span>

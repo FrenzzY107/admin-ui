@@ -1,21 +1,32 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Labeledinput from "../elements/Labeledinput";
 import CheckBox from "../elements/CheckBox";
 import Button from "../elements/Button";
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
-function FormSignin() {
+
+function FormSignin({ onSubmit }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+    const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit(email, password);
+};
 
   return (
     <>
-      <form className="mt-2">
            {/* Email */}
+      <form className="mt-2" onSubmit={handleSubmit}>
         <div className="py-2">
           <Labeledinput
             label="Email Address"
             placeholder="kakapurnama@gmail.com"
             id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
        
@@ -33,28 +44,20 @@ function FormSignin() {
             id="password"
             placeholder="********"
             className="p-2 text-sm rounded-md w-full bg-special-mainBg border border-gray-300 text-gray-700 focus:border-black focus:outline-none focus:ring-0 my-2 pr-10"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           {/* Show/Hide Password */}
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-10 text-gray-400 hover:text-gray-600"
-          >
-            {showPassword ? (
-              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478..." />
-              </svg>
-            ) : (
-              <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                  d="M3 3l18 18..." />
-              </svg>
-            )}
-          </button>
+   <button
+  type="button"
+  onClick={() => setShowPassword(!showPassword)}
+  className="absolute right-3 top-10 text-gray-400 hover:text-gray-600"
+>
+  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+</button>
+
+
         </div>
 
         <div className="flex items-center gap-2 my-3">
