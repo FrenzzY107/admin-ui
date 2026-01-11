@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import AuthLayout from "../components/layouts/AuthLayout";
 import FormSignin from "../components/fragments/FormSignin";
 import { loginService } from "../services/authService";
-import { AuthContext } from "../context/authContext";
+import { AuthContext } from "../context/AuthContext";
 
 
 function SignIn() {
