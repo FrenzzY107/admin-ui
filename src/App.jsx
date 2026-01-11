@@ -12,7 +12,7 @@ import DashboardPage from "./pages/dashboard";
 import BalancePage from "./pages/balance";
 import ErrorPage from "./pages/error";
 
-import { AuthContext } from "./context/authContext";
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
   const { user } = useContext(AuthContext);
