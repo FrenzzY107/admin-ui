@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Labeledinput from "../elements/LabeledInput";
+import LabeledInput from "../elements/LabeledInput";
 import Button from "../elements/Button";
 
 function FormSignup() {

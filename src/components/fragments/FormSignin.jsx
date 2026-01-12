@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import LabeledInput from "../elements/Labeledinput";
+import LabeledInput from "../elements/LabeledInput";
 import CheckBox from "../elements/CheckBox";
 import Button from "../elements/Button";
 import { useState } from "react";
