@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import Labeledinput from "../elements/Labeledinput";
+import LabeledInput from "../elements/Labeledinput";
 import CheckBox from "../elements/CheckBox";
 import Button from "../elements/Button";
-import Labeledinput from "../elements/Labeledinput";
+import LabeledInput from "../elements/Labeledinput";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
