@@ -1,7 +1,7 @@
 import React from "react";
 import Input from "./Input";
 
-function ILabeledInput(props) {
+function Labeledinput(props) {
   const { label, id, ...rest } = props;
 
   return (
@@ -14,4 +14,4 @@ function ILabeledInput(props) {
   );
 }
 
-export default LabeledInput;
+export default Labeledinput;
