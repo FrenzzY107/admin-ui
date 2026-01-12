@@ -2,70 +2,115 @@ import { Link } from "react-router-dom";
 import Labeledinput from "../elements/Labeledinput";
 import CheckBox from "../elements/CheckBox";
 import Button from "../elements/Button";
+import LabeledInput from "../elements/LabeledInput";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
 
+const SignInSchema = Yup.object().shape({
+  email: Yup.string().email("Email tidak valid").required("Email wajib diisi"),
+  password: Yup.string().required("Password wajib diisi"),
+});
 
 function FormSignin({ onSubmit }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-    const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(email, password);
-};
+
+    if (onSubmit) {
+      onSubmit({ email, password });
+    } else {
+      console.log("Email:", email);
+      console.log("Password:", password);
+    }
+  };
+
 
   return (
     <>
-           {/* Email */}
-      <form className="mt-2" onSubmit={handleSubmit}>
-        <div className="py-2">
-          <Labeledinput
-            label="Email Address"
-            placeholder="kakapurnama@gmail.com"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-       
-        {/* Password */}
-        <div className="py-2 relative">
-          <div className="flex justify-between items-center">
-            <label htmlFor="password" className="block text-sm">Password</label>
-            <a href="#" className="text-primary text-xs hover:underline">
-              Forgot Password?
-            </a>
-          </div>
+           
+      <Formik
+          initialValues={{
+            email: "",
+            password: "",
+            status: false,
+          }}
+          validationSchema={SignInSchema}
+          onSubmit={async (values, { setSubmitting }) => {
+            try {
+              await onSubmit(values.email, values.password);
+            } finally {
+              setSubmitting(false);
+            }
+          }}
+        >
+          {({ isSubmitting }) => (
+           	<Form>
+             	{/* EMAIL */}
+              <div className="mb-6">
+                <Field name="email">
+                  {({ field }) => (
+                    <LabeledInput
+                      {...field}
+                      id="email"
+                      type="email"
+                      label="Email Address"
+                      placeholder="kakapurnama@gmail.com"
+                    />
+                  )}
+                </Field>
+                <ErrorMessage
+                  name="email"
+                  component="p"
+                  className="text-red-500 text-xs mt-1"
+                />  
+              </div>
 
-          <input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            placeholder="********"
-            className="p-2 text-sm rounded-md w-full bg-special-mainBg border border-gray-300 text-gray-700 focus:border-black focus:outline-none focus:ring-0 my-2 pr-10"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+              {/* PASSWORD */}
+              <div className="mb-6">
+                <Field name="password">
+                  {({ field }) => (
+                    <LabeledInput
+                      {...field}
+                      id="password"
+                      type="password"
+                      label="Password"
+                      placeholder="●●●●●●●●●●●●●●"
+                    />
+                  )}
+                </Field> 
+                  <ErrorMessage
+                  name="password"
+                  component="p"
+                  className="text-red-500 text-xs mt-1"
+                /> 
+              </div>
 
-          {/* Show/Hide Password */}
-   <button
-  type="button"
-  onClick={() => setShowPassword(!showPassword)}
-  className="absolute right-3 top-10 text-gray-400 hover:text-gray-600"
->
-  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-</button>
+              {/* CHECKBOX */}
+              <div className="mb-3">
+                <Field name="status">
+                  {({ field }) => (
+                    <CheckBox
+                      {...field}
+                      id="status"
+                      type="checkbox"
+                      checked={field.value}
+                      label="Keep me signed in"
+                    />
+                  )}
+                </Field>
+              </div>
+                {/* BUTTON */}
+              <Button>{isSubmitting ? "Loading..." : "Login"}</Button>
+            </Form>
+          )}
+      </Formik>
 
 
-        </div>
-
-        <div className="flex items-center gap-2 my-3">
-          <CheckBox />
-        </div>
-
-        <Button type="submit">Login</Button>
-      </form>
 
         {/* Divider */}
       <div className="flex items-center justify-center my-4 relative">

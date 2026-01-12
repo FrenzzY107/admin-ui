@@ -8,19 +8,35 @@ import CardRecentTransaction from "../components/fragments/CardRecentTransaction
 import CardStatistic from "../components/fragments/CardStatistic";
 import CardExpenseBeakdown from "../components/fragments/CardExpenseBeakdown";
 import { transactions, bills, expensesBreakdowns, balances, goals, expensesStatistics } from "../data";
+import AppSnackbar from "../components/elements/AppSnackbar";
 
 import { goalService } from "../services/dataService";
 import { AuthContext } from "../context/AuthContext";
 
 function dashboard() {
   	const [goals, setGoals] = useState({});
+    
+    const [snackbar, setSnackbar] = useState({
+      open: false,
+      message: "",
+      severity: "success",
+    });
+
+
+    const handleCloseSnackbar = () => {
+      setSnackbar((prev) => ({ ...prev, open: false }));
+    };    
 
   const fetchGoals = async () => {
     try {
       const data = await goalService();
       setGoals(data);
     } catch (err) {
-      console.error("Gagal mengambil data goals:", err);
+      setSnackbar({
+      open: true,
+      message: "Gagal mengambil data goals:",
+      severity: "error",
+    });
       if (err.status === 401) {
         logout();
       }
@@ -55,6 +71,14 @@ function dashboard() {
             <CardExpenseBeakdown data={expensesBreakdowns} />
           </div>
         </div>
+
+
+        	<AppSnackbar
+          open={snackbar.open}
+          message={snackbar.message}
+          severity={snackbar.severity}
+          onClose={handleCloseSnackbar}
+        />
       </MainLayout>
   );
 }
