@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import ExpenseComparisonCard from "../components/fragments/ExpenseComparisonCard";
+
 
 const expensesComparison = [
   {
@@ -63,20 +65,61 @@ const expensesComparison = [
   },
 ];
 
+const LoadingSpinner = () => (
+  <div className="fixed inset-100 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+    <div className="flex flex-col items-center">
+      <div className="h-12 w-12 border-4 border-gray-300 border-t-primary rounded-full animate-spin" />
+      <p className="mt-3 text-sm text-gray-600">Loading expenses...</p>
+    </div>
+  </div>
+);
+  
+
 function Expense() {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // simulasi fetch data (seperti dari API)
+    setTimeout(() => {
+      setData(expensesComparison);
+      setLoading(false);
+    }, 1000); // 1 detik
+  }, []);
+
   return (
     <div className="p-6">
       <h2 className="text-lg font-semibold mb-6">
         Expenses Comparison
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-        {expensesComparison.map((item) => (
-          <ExpenseComparisonCard key={item.id} data={item} />
-        ))}
-      </div>
+     {loading ? (
+  <>
+    {/* ===== SPINNER ===== */}
+    <LoadingSpinner />
+
+    {/* ===== SKELETON ===== */}
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {[1, 2, 3, 4, 5, 6].map((item) => (
+        <div
+          key={item}
+          className="h-40 rounded-lg bg-gray-200 animate-pulse"
+        />
+      ))}
+    </div>
+  </>
+) : (
+  // ===== DATA =====
+  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+    {data.map((item) => (
+      <ExpenseComparisonCard key={item.id} data={item} />
+    ))}
+  </div>
+)}
+
     </div>
   );
 }
+
 
 export default Expense;
