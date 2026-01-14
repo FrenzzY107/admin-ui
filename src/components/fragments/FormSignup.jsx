@@ -2,88 +2,147 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import LabeledInput from "../elements/Labeledinput";
 import Button from "../elements/Button";
+import AppSnackbar from "../elements/AppSnackbar";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+
+const SignUpSchema = Yup.object().shape({
+  name: Yup.string().min(3).required("Nama wajib diisi"),
+  email: Yup.string().email("Email tidak valid").required("Email wajib diisi"),
+  password: Yup.string().min(6).required("Password wajib diisi"),
+});
 
 function FormSignup() {
   const navigate = useNavigate();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // simulasi signup berhasil
-    navigate("/signin");
-  };
-
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
+  
   return (
-    <>
-      <form onSubmit={handleSubmit} className="mt-2">
-        {/* Title */}
-        <h1 className="text-center text-lg font-semibold mb-4">
-          Create an Account
-        </h1>
+      <>
+       <Formik
+        initialValues={{ name: "", email: "", password: "" }}
+        validationSchema={SignUpSchema}
+        onSubmit={async (values, { setSubmitting }) => {
+          try {
+            const res = await fetch(
+              "https://jwt-auth-eight-neon.vercel.app/register",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(values),
+              }
+            );
 
-        {/* Name */}
-        <div className="py-2">
-          <label className="block text-sm mb-1">Name</label>
-          <input
-            type="text"
-            placeholder="kaka purnama"
-            className="p-2 text-sm rounded-md w-full bg-special-mainBg border border-gray-300 text-gray-700 focus:border-black focus:outline-none"
-            required
-          />
-        </div>
+            const data = await res.json();
 
-        {/* Email */}
-        <div className="py-2">
-          <Labeledinput
-            label="Email Address"
-            placeholder="kakapurnama@gmail.com"
-            id="email"
-          />
-        </div>
+            if (!res.ok) {
+              throw new Error(data.message || "Email sudah pernah digunakan sebelumnya");
+            }
 
-        {/* Password */}
-        <div className="py-2 relative">
-          <label className="block text-sm">Password</label>
+            setSnackbar({
+              open: true,
+              message: "Register berhasil, silakan login",
+              severity: "success",
+            });
 
-          <input
-            type={showPassword ? "text" : "password"}
-            placeholder="********"
-            className="p-2 text-sm rounded-md w-full bg-special-mainBg border border-gray-300 text-gray-700 focus:border-black focus:outline-none my-2 pr-10"
-            required
-          />
+            setTimeout(() => navigate("/login"), 1500);
+          } catch (err) {
+            setSnackbar({
+              open: true,
+              message: err.message,
+              severity: "error",
+            });
+          } finally {
+            setSubmitting(false);
+          }
+        }}
+      >
+        {({ isSubmitting }) => (
+          <Form className="mt-2">
+            <h1 className="text-center text-lg font-semibold mb-4">
+              Create an Account
+            </h1>
 
-          {/* Show / Hide Password */}
-          <button
-            type="button"
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 top-9 text-gray-400 hover:text-gray-600"
-          >
-            👁
-          </button>
-        </div>
+            {/* NAME */}
+            <div className="mb-4">
+              <Field name="name">
+                {({ field }) => (
+                  <LabeledInput
+                    {...field}
+                    label="Name"
+                    placeholder="kaka purnama"
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                name="name"
+                component="p"
+                className="text-red-500 text-xs mt-1"
+              />
+            </div>
 
-        {/* Terms */}
-        <p className="text-xs text-gray-500 my-3 text-center">
-          By continuing, you agree to our{" "}
-          <span className="text-primary hover:underline cursor-pointer">
-            terms of service
-          </span>
-          .
-        </p>
+            {/* EMAIL */}
+            <div className="mb-4">
+              <Field name="email">
+                {({ field }) => (
+                  <LabeledInput
+                    {...field}
+                    label="Email Address"
+                    type="email"
+                    placeholder="kakapurnama@gmail.com"
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                name="email"
+                component="p"
+                className="text-red-500 text-xs mt-1"
+              />
+            </div>
 
-        {/* Sign Up Button */}
-        <Button type="submit">Sign Up</Button>
-      </form>
+            {/* PASSWORD */}
+            <div className="mb-4">
+              <Field name="password">
+                {({ field }) => (
+                  <LabeledInput
+                    {...field}
+                    label="Password"
+                    type="password"
+                    placeholder="●●●●●●●●"
+                  />
+                )}
+              </Field>
+              <ErrorMessage
+                name="password"
+                component="p"
+                className="text-red-500 text-xs mt-1"
+              />
+            </div>
+        
+
+         {/* BUTTON */}
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Loading..." : "Register"}
+            </Button>
+          </Form>
+        )}
+      </Formik>
+
+      
 
       {/* Divider */}
       <div className="flex items-center justify-center my-4 relative">
         <div className="w-full border-t border-gray-300"></div>
         <span className="absolute bg-special-mainBg px-2 text-xs text-gray-400">
-          or sign up with
+          or sign in with
         </span>
       </div>
 
-         {/* Google Button */}
+      {/* Google Button */}
      <Button type="button" variant="secondary">
   <span className="flex items-center justify-center">
 		<svg
@@ -114,14 +173,16 @@ function FormSignup() {
   </span>
 </Button>
 
+ <AppSnackbar
+        {...snackbar}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      />
+
       {/* Back to Login */}
       <div className="flex justify-center mt-4">
         <span className="text-sm text-gray-600">
           Already have an account?{" "}
-          <Link
-            to="/signin"
-            className="text-primary font-bold hover:underline"
-          >
+          <Link to="/login" className="text-primary font-bold hover:underline">
             Sign In Here
           </Link>
         </span>

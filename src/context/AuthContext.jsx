@@ -1,6 +1,5 @@
 import { createContext, useState } from "react";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios";
 
 export const AuthContext = createContext();
 
@@ -11,30 +10,27 @@ export const AuthContextProvider = ({ children }) => {
     if (token) {
       try {
         return jwtDecode(token);
-      } catch (err) {
-        console.error("Invalid token", err);
+      } catch {
         localStorage.removeItem("token");
         return null;
       }
     }
-
     return null;
   });
 
-  const login = (token) => {
-    try {
-      const decoded = jwtDecode(token);
+const login = (token) => {
+  if (typeof token !== "string") {
+    console.error("TOKEN TIDAK VALID:", token);
+    return;
+  }
 
-      setUser(decoded);
-      localStorage.setItem("token", token);
-    } catch (err) {
-      console.error("Invalid token");
-    }
-  };
-  
+  localStorage.setItem("token", token);
+  setUser(jwtDecode(token));
+};
+
   const logout = () => {
-    setUser(null);
     localStorage.removeItem("token");
+    setUser(null);
   };
 
   return (

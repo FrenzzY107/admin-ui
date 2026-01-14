@@ -1,4 +1,4 @@
-import { BarChart } from '@mui/x-charts/BarChart'; 
+import { BarChart } from "@mui/x-charts/BarChart";
 import * as React from "react";
 import { ThemeContext } from "../../context/ThemeContext";
 
@@ -24,19 +24,28 @@ const chartSetting = {
   },
 };
 
-
-export function valueFormatter(value) {
-  return `${value}mm`;
-}
-
-
-export default function BarsDataset(props) {
-  const { dataset } = props;
+export default function BarsDataset({ dataset }) {
   const { theme } = React.useContext(ThemeContext);
 
+  // 🔐 GUARD WAJIB
+  if (
+    !dataset ||
+    !dataset.data ||
+    !dataset.series ||
+    dataset.data.length === 0
+  ) {
+    return (
+      <p className="text-sm text-gray-400 text-center">
+        No chart data available
+      </p>
+    );
+  }
+
   const expensesSeries = dataset.series.map((item) =>
-    item.dataKey === "amountLastWeek" ? { ...item, color: theme.color }  : item
-);
+    item.dataKey === "amountLastWeek"
+      ? { ...item, color: theme.color }
+      : item
+  );
 
   return (
     <BarChart
@@ -47,4 +56,3 @@ export default function BarsDataset(props) {
     />
   );
 }
-

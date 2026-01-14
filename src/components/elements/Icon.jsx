@@ -27,6 +27,7 @@ import VisaSVG from "../../assets/icons/Visa_Logo.svg?react";
 import TargetSVG from "../../assets/icons/target.svg?react";
 import AwardSVG from "../../assets/icons/Award.svg?react";
 
+
 const createIcon =
   (SVG) =>
   ({ size = 24, color = "currentColor", ...props }) =>

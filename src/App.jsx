@@ -11,55 +11,53 @@ import SignUpPage from "./pages/SignUp";
 import DashboardPage from "./pages/dashboard";
 import BalancePage from "./pages/balance";
 import ErrorPage from "./pages/error";
+import MainLayout from "./components/layouts/MainLayout";
+import Expense from "./pages/Expenses";
 
-import { AuthContext } from "./context/AuthContext";
+
+
 
 function App() {
-  const { user } = useContext(AuthContext);
-
   const RequireAuth = ({ children }) => {
-    return user ? children : <Navigate to="/login" replace />;
+    const token = localStorage.getItem("token");
+    return token ? children : <Navigate to="/login" replace />;
   };
 
   const NotRequireAuth = ({ children }) => {
-    return user ? <Navigate to="/" replace /> : children;
+    const token = localStorage.getItem("token");
+    return token ? <Navigate to="/" replace /> : children;
   };
-
-  const myRouter = createBrowserRouter([
-    {
-      path: "/",
-      element: (
-        <RequireAuth>
-          <DashboardPage />
-        </RequireAuth>
-      ),
-      errorElement: <ErrorPage />,
-    },
-    {
-      path: "/login",
-      element: (
-        <NotRequireAuth>
-          <SignInPage />
-        </NotRequireAuth>
-      ),
-    },
-    {
-      path: "/register",
-      element: (
-        <NotRequireAuth>
-          <SignUpPage />
-        </NotRequireAuth>
-      ),
-    },
-    {
-      path: "/balance",
-      element: (
-        <RequireAuth>
-          <BalancePage />
-        </RequireAuth>
-      ),
-    },
-  ]);
+const myRouter = createBrowserRouter([
+  {
+    element: (
+      <RequireAuth>
+        <MainLayout />
+      </RequireAuth>
+    ),
+    errorElement: <ErrorPage />,
+    children: [
+      { path: "/", element: <DashboardPage /> },
+      { path: "/balance", element: <BalancePage /> },
+      { path: "/expense", element: <Expense /> },
+    ],
+  },
+  {
+    path: "/login",
+    element: (
+      <NotRequireAuth>
+        <SignInPage />
+      </NotRequireAuth>
+    ),
+  },
+  {
+    path: "/register",
+    element: (
+      <NotRequireAuth>
+        <SignUpPage />
+      </NotRequireAuth>
+    ),
+  },
+]);
 
   return <RouterProvider router={myRouter} />;
 }

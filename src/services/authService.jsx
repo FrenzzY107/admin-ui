@@ -1,28 +1,9 @@
 export const loginService = async (email, password) => {
-  const response = await axios.post(
-    `${API_URL}/login`,
-    { email, password }
-  );
-
-  return response.data; 
-};
-
-export const logoutService = async () => {
-  try {
-    const token = localStorage.getItem("token");
-
-    await axios.post(`${API_URL}/logout`, 
-     {},
-	   {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }, 
-     }
-    );
-  } catch (error) {
-    throw {
-      status: error.response?.status,
-      msg: error.response?.data?.msg,
-    };
+  if (email === "111202315396@mhs.dinus.ac.id" && password === "123456") {
+    return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9." +
+           "eyJpZCI6MSwibmFtZSI6IkFkbWluIn0." +
+           "dummy-signature";
   }
+
+  throw new Error("Email atau password salah");
 };
